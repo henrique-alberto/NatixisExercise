@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using MovieRental.Movie;
 using MovieRental.Rental;
 
 namespace MovieRental.Controllers
@@ -16,12 +15,17 @@ namespace MovieRental.Controllers
             _features = features;
         }
 
-
         [HttpPost]
-        public IActionResult Post([FromBody] Rental.Rental rental)
+        public async Task<IActionResult> Post([FromBody] Rental.Rental rental)
         {
-	        return Ok(_features.Save(rental));
+	        return Ok(await _features.Save(rental));
         }
 
+        [HttpGet("by-customer/{customerName}")]
+        public async Task<IActionResult> GetByCustomerName([FromRoute] string customerName)
+        {
+            var rentals = await _features.GetRentalsByCustomerName(customerName);
+            return Ok(rentals);
+        }
 	}
 }
