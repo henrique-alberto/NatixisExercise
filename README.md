@@ -1,2 +1,0 @@
-# NatixisExercise
-Natixis Exercise
