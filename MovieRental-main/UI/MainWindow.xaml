@@ -1,0 +1,34 @@
+﻿<Window x:Class="UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UI"
+        mc:Ignorable="d"
+        Title="Movie Rentals" Height="450" Width="800">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="Customer Name:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <TextBox x:Name="CustomerNameTextBox" Width="200" Margin="0,0,10,0"/>
+            <Button Content="Load Rentals" Click="LoadRentals_Click"/>
+        </StackPanel>
+
+        <DataGrid Grid.Row="1" x:Name="RentalsGrid" 
+                  ItemsSource="{Binding Rentals}" 
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="Movie" Binding="{Binding Movie.Title}"/>
+                <DataGridTextColumn Header="Customer" Binding="{Binding Customer.Name}"/>
+                <DataGridTextColumn Header="Days Rented" Binding="{Binding DaysRented}"/>
+                <DataGridTextColumn Header="Payment Method" Binding="{Binding PaymentMethod}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

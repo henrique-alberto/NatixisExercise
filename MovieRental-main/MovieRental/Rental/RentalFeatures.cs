@@ -38,7 +38,7 @@ namespace MovieRental.Rental
             return rental;
         }
 
-		public async Task<IEnumerable<Rental>> GetRentalsByCustomerId(string customerName)
+		public async Task<IEnumerable<Rental>> GetRentalsByCustomerName(string customerName)
 		{
 			return await _movieRentalDb.Rentals
 				.Include(r => r.Customer)

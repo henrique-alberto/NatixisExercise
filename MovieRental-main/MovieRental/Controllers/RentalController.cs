@@ -21,9 +21,9 @@ namespace MovieRental.Controllers
         }
 
         [HttpGet("by-customer/{customerName}")]
-        public async Task<IActionResult> GetByCustomerId([FromRoute] string customerName)
+        public async Task<IActionResult> GetByCustomerName([FromRoute] string customerName)
         {
-            var rentals = await _features.GetRentalsByCustomerId(customerName);
+            var rentals = await _features.GetRentalsByCustomerName(customerName);
             return Ok(rentals);
         }
 	}
