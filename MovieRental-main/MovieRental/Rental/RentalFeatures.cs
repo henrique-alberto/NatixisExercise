@@ -11,21 +11,40 @@ namespace MovieRental.Rental
 			_movieRentalDb = movieRentalDb;
 		}
 
-		// Made async: non-blocking DB operations
 		public async Task<Rental> Save(Rental rental)
 		{
-			await _movieRentalDb.Rentals.AddAsync(rental);
-			await _movieRentalDb.SaveChangesAsync();
-			return rental;
-		}
+            if (rental.Customer != null)
+            {
+                var existingCustomer = await _movieRentalDb.Customers.FirstOrDefaultAsync(c => c.Name == rental.CustomerName);
+                if (existingCustomer != null)
+                {
+                    _movieRentalDb.Entry(existingCustomer).CurrentValues.SetValues(rental.Customer);
+                    rental.Customer = existingCustomer;
+                }
+            }
 
-		//TODO: finish this method and create an endpoint for it
-		public async Task<IEnumerable<Rental>> GetRentalsByCustomerName(string customerName)
+            if (rental.Movie != null)
+            {
+                var existingMovie = await _movieRentalDb.Movies.FindAsync(rental.MovieId);
+                if (existingMovie != null)
+                {
+                    _movieRentalDb.Entry(existingMovie).State = EntityState.Unchanged;
+                    rental.Movie = existingMovie;
+                }
+            }
+
+            await _movieRentalDb.Rentals.AddAsync(rental);
+            await _movieRentalDb.SaveChangesAsync();
+            return rental;
+        }
+
+		public async Task<IEnumerable<Rental>> GetRentalsByCustomerId(string customerName)
 		{
 			return await _movieRentalDb.Rentals
+				.Include(r => r.Customer)
+				.Include(r => r.Movie)
 				.Where(r => r.CustomerName == customerName)
 				.ToListAsync();
 		}
-
 	}
 }

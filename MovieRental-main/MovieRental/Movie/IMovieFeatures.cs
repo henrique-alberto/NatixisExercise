@@ -3,5 +3,5 @@
 public interface IMovieFeatures
 {
 	Movie Save(Movie movie);
-	List<Movie> GetAll();
+	Task<List<Movie>> GetAllAsync(int page = 1, int pageSize = 10);
 }

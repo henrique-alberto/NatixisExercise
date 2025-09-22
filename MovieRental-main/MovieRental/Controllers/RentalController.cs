@@ -7,7 +7,6 @@ namespace MovieRental.Controllers
     [Route("[controller]")]
     public class RentalController : ControllerBase
     {
-
         private readonly IRentalFeatures _features;
 
         public RentalController(IRentalFeatures features)
@@ -22,9 +21,9 @@ namespace MovieRental.Controllers
         }
 
         [HttpGet("by-customer/{customerName}")]
-        public async Task<IActionResult> GetByCustomerName([FromRoute] string customerName)
+        public async Task<IActionResult> GetByCustomerId([FromRoute] string customerName)
         {
-            var rentals = await _features.GetRentalsByCustomerName(customerName);
+            var rentals = await _features.GetRentalsByCustomerId(customerName);
             return Ok(rentals);
         }
 	}

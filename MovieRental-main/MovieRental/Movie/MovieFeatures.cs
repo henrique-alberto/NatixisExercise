@@ -1,10 +1,13 @@
-﻿using MovieRental.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using MovieRental.Data;
 
 namespace MovieRental.Movie
 {
 	public class MovieFeatures : IMovieFeatures
 	{
 		private readonly MovieRentalDbContext _movieRentalDb;
+		private const int DefaultPageSize = 10;
+
 		public MovieFeatures(MovieRentalDbContext movieRentalDb)
 		{
 			_movieRentalDb = movieRentalDb;
@@ -17,12 +20,20 @@ namespace MovieRental.Movie
 			return movie;
 		}
 
-		// TODO: tell us what is wrong in this method? Forget about the async, what other concerns do you have?
-		public List<Movie> GetAll()
+		public async Task<List<Movie>> GetAllAsync(int page = 1, int pageSize = DefaultPageSize)
 		{
-			return _movieRentalDb.Movies.ToList();
+			try
+			{
+				return await _movieRentalDb.Movies
+					.Skip((page - 1) * pageSize)
+					.Take(pageSize)
+					.ToListAsync();
+			}
+			catch (Exception ex)
+			{
+				// Log the exception here if you have a logging framework
+				throw new InvalidOperationException("Failed to retrieve movies from database", ex);
+			}
 		}
-
-
 	}
 }

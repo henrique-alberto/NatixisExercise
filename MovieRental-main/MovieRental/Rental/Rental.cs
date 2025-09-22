@@ -13,9 +13,11 @@ namespace MovieRental.Rental
 		[ForeignKey("Movie")]
 		public int MovieId { get; set; }
 
-		public string PaymentMethod { get; set; }
+		public Customer.Customer? Customer { get; set; }
 
-		// TODO: we should have a table for the customers
+		[ForeignKey("Customer")]
 		public string CustomerName { get; set; }
+
+		public string PaymentMethod { get; set; }
 	}
 }
