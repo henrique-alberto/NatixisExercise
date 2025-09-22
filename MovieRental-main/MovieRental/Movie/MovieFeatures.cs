@@ -31,7 +31,6 @@ namespace MovieRental.Movie
 			}
 			catch (Exception ex)
 			{
-				// Log the exception here if you have a logging framework
 				throw new InvalidOperationException("Failed to retrieve movies from database", ex);
 			}
 		}
