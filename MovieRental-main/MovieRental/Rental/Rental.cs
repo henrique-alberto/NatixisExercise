@@ -16,7 +16,7 @@ namespace MovieRental.Rental
 		public Customer.Customer? Customer { get; set; }
 
 		[ForeignKey("Customer")]
-		public string CustomerName { get; set; }
+		public int CustomerId { get; set; }
 
 		public string PaymentMethod { get; set; }
 	}

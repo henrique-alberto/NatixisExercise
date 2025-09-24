@@ -5,6 +5,7 @@ namespace MovieRental.PaymentProviders
         IPaymentProvider GetPaymentProvider(string paymentMethod);
     }
 
+    //TODO use dependency to news provider?
     public class PaymentProviderFactory : IPaymentProviderFactory
     {
         public IPaymentProvider GetPaymentProvider(string paymentMethod)

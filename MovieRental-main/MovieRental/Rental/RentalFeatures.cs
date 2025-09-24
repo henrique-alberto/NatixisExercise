@@ -15,7 +15,8 @@ namespace MovieRental.Rental
 			_paymentProviderFactory = paymentProviderFactory;
 		}
 
-		public async Task<Rental> Save(Rental rental)
+        //TODO: transaction handling and save Rental first, if payment is not successful delete the rental
+        public async Task<Rental> Save(Rental rental)
 		{
 			// Process payment first
 			var paymentProvider = _paymentProviderFactory.GetPaymentProvider(rental.PaymentMethod);
@@ -30,7 +31,7 @@ namespace MovieRental.Rental
 
 			if (rental.Customer != null)
 			{
-				var existingCustomer = await _movieRentalDb.Customers.FirstOrDefaultAsync(c => c.Name == rental.CustomerName);
+				var existingCustomer = await _movieRentalDb.Customers.FirstOrDefaultAsync(c => c.Id == rental.Customer.Id);
 				if (existingCustomer != null)
 				{
 					_movieRentalDb.Entry(existingCustomer).CurrentValues.SetValues(rental.Customer);
@@ -54,11 +55,11 @@ namespace MovieRental.Rental
 		}
 
 		public async Task<IEnumerable<Rental>> GetRentalsByCustomerName(string customerName)
-		{
-			return await _movieRentalDb.Rentals
+        {  //TODO: if I delete customer line, it will not include customer details in the rental result?
+            return await _movieRentalDb.Rentals
 				.Include(r => r.Customer)
 				.Include(r => r.Movie)
-				.Where(r => r.CustomerName == customerName)
+				.Where(r => r.Customer.Name == customerName)
 				.ToListAsync();
 		}
 	}
